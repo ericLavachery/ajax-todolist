@@ -75,13 +75,10 @@ function addTodosToPage() {
 function getFormData() {
     var task = document.getElementById("task").value;
     if (checkInputText(task, "Please enter a task")) return;
-
     var who = document.getElementById("who").value;
     if (checkInputText(who, "Please enter a person to do the task")) return;
-
     var date = document.getElementById("dueDate").value;
     if (checkInputText(date, "Please enter a due date")) return;
-
     var todoItem = new Todo(task, who, date);
     todos.push(todoItem);
     addTodoToPage(todoItem);
