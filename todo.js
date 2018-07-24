@@ -1,3 +1,13 @@
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
+}
+
 function Todo(task, who, dueDate) {
     this.task = task;
     this.who = who;
@@ -29,6 +39,7 @@ function getTodoData() {
             }
         }
     };
+    // request.overrideMimeType("text/plain");
     request.send();
 }
 
@@ -53,7 +64,7 @@ function addTodosToPage() {
         var todoItem = todos[i];
         var li = document.createElement("li");
         var kol = 'gris';
-        if (todoItem.dueDate == 'today') {
+        if (todoItem.dueDate == formatDate(Date())) {
             var kol = 'rouge';
         }
         li.innerHTML = '<span class="bleu">' + todoItem.who + " :</span> " + todoItem.task + ' <span class="' + kol + '">(' + todoItem.dueDate + ')</span>';
@@ -74,6 +85,7 @@ function getFormData() {
     var todoItem = new Todo(task, who, date);
     todos.push(todoItem);
     addTodoToPage(todoItem);
+    saveTodoData();
 }
 
 function checkInputText(value, msg) {
@@ -88,10 +100,20 @@ function addTodoToPage(todoItem) {
     var ul = document.getElementById("todoList");
     var li = document.createElement("li");
     var kol = 'gris';
-    if (todoItem.dueDate == 'today') {
+    if (todoItem.dueDate == formatDate(Date())) {
         var kol = 'rouge';
     }
     li.innerHTML = '<span class="bleu">' + todoItem.who + " :</span> " + todoItem.task + ' <span class="' + kol + '">(' + todoItem.dueDate + ')</span>';
     ul.appendChild(li);
     document.forms[0].reset();
+}
+
+function saveTodoData() {
+    var todoJSON = JSON.stringify(todos);
+    var request = new XMLHttpRequest();
+    var URL = "save.php?data=" + encodeURI(todoJSON);
+    request.open("GET", URL);
+    request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+    // request.overrideMimeType("text/plain");
+    request.send();
 }
