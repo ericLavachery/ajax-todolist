@@ -8,6 +8,21 @@ function formatDate(date) {
     return [year, month, day].join('-');
 }
 
+function showDate(date) {
+    var d = new Date(date),
+    month = '' + (d.getMonth() + 1),
+    day = '' + d.getDate(),
+    year = d.getFullYear();
+
+    var show = [day, month].join('/');
+    if (formatDate(d) == formatDate(Date())) {
+        show = '<span class="rouge">today</span>';
+    } else if (formatDate(d) < formatDate(Date())) {
+        show = '<span class="gris">too late</span>';
+    }
+    return show;
+}
+
 function Todo(task, who, dueDate) {
     this.task = task;
     this.who = who;
@@ -27,7 +42,7 @@ function init() {
 
 function getTodoData() {
     var request = new XMLHttpRequest();
-    request.open("GET", "todo.json");
+    request.open("POST", "todo.json");
     request.onreadystatechange = function() {
         if (this.readyState == this.DONE && this.status == 200) {
             if (this.responseText) {
@@ -58,16 +73,31 @@ function parseTodoItems(todoJSON) {
     }
 }
 
+function sortOn(property){
+    return function(a, b){
+        if(a[property] < b[property]){
+            return -1;
+        }else if(a[property] > b[property]){
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+}
+
 function addTodosToPage() {
+    todos.sort(sortOn("dueDate"));
     var ul = document.getElementById("todoList");
     for (var i = 0; i < todos.length; i++) {
         var todoItem = todos[i];
         var li = document.createElement("li");
-        var kol = 'gris';
+        var kol = 'noir';
         if (todoItem.dueDate == formatDate(Date())) {
-            var kol = 'rouge';
+            kol = 'rouge';
+        } else if (todoItem.dueDate < formatDate(Date())) {
+            kol = 'gris';
         }
-        li.innerHTML = '<span class="bleu">' + todoItem.who + " :</span> " + todoItem.task + ' <span class="' + kol + '">(' + todoItem.dueDate + ')</span>';
+        li.innerHTML = '<span class="bleu">' + todoItem.who + ' :</span> <span class="' + kol + '">' + todoItem.task + ' (' + showDate(todoItem.dueDate) + ')</span>';
         ul.appendChild(li);
     }
 }
@@ -96,11 +126,8 @@ function checkInputText(value, msg) {
 function addTodoToPage(todoItem) {
     var ul = document.getElementById("todoList");
     var li = document.createElement("li");
-    var kol = 'gris';
-    if (todoItem.dueDate == formatDate(Date())) {
-        var kol = 'rouge';
-    }
-    li.innerHTML = '<span class="bleu">' + todoItem.who + " :</span> " + todoItem.task + ' <span class="' + kol + '">(' + todoItem.dueDate + ')</span>';
+    var kol = 'vert';
+    li.innerHTML = '<span class="bleu">' + todoItem.who + ' :</span> <span class="' + kol + '">' + todoItem.task + ' (' + showDate(todoItem.dueDate) + ')</span>';
     ul.appendChild(li);
     document.forms[0].reset();
 }
@@ -109,7 +136,7 @@ function saveTodoData() {
     var todoJSON = JSON.stringify(todos);
     var request = new XMLHttpRequest();
     var URL = "save.php?data=" + encodeURI(todoJSON);
-    request.open("GET", URL);
+    request.open("POST", URL);
     request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
     // request.overrideMimeType("text/plain");
     request.send();

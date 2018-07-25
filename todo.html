@@ -20,7 +20,14 @@
                 </div>
                 <div class="tableRow">
                     <label for="who">Who should do it: </label>
-                    <input type="text" id="who" placeholder="Scott">
+                    <select class="contentselect" id="contentselect">
+                        <option></option>
+                        <option value="Scott">Scott</option>
+                        <option value="Michael">Michael</option>
+                        <option value="Elisabeth">Elisabeth</option>
+                        <option value="Bob">Bob</option>
+                    </select>
+                    <input type="text" name="data" class="datatext" id="who">
                 </div>
                 <div class="tableRow">
                     <label for="dueDate">Due Date: </label>
@@ -33,5 +40,6 @@
             </div>
         </fieldset>
     </form>
+    <script src="seltext.js" charset="utf-8"></script>
 </body>
 </html>
