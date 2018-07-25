@@ -48,6 +48,7 @@ function getTodoData() {
             if (this.responseText) {
                 parseTodoItems(this.responseText);
                 addTodosToPage();
+                createNameList();
             }
             else {
                 console.log("Error: Data is empty");
@@ -127,7 +128,7 @@ function addTodoToPage(todoItem) {
     var ul = document.getElementById("todoList");
     var li = document.createElement("li");
     var kol = 'vert';
-    li.innerHTML = '<span class="bleu">' + todoItem.who + ' :</span> <span class="' + kol + '">' + todoItem.task + ' (' + showDate(todoItem.dueDate) + ')</span>';
+    li.innerHTML = '<span class="vert">NEW ENTRY : </span>' + '<span class="bleu">' + todoItem.who + ' :</span> <span class="' + kol + '">' + todoItem.task + ' (' + showDate(todoItem.dueDate) + ')</span>';
     ul.appendChild(li);
     document.forms[0].reset();
 }
