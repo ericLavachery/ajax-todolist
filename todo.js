@@ -88,19 +88,35 @@ function sortOn(property){
 
 function addTodosToPage() {
     todos.sort(sortOn("dueDate"));
-    var ul = document.getElementById("todoList");
+    // affiche todolist
+    var todoHtml = document.getElementById("todoList");
+    var newLine = '';
     for (var i = 0; i < todos.length; i++) {
         var todoItem = todos[i];
-        var li = document.createElement("li");
-        var kol = 'noir';
-        if (todoItem.dueDate == formatDate(Date())) {
-            kol = 'rouge';
-        } else if (todoItem.dueDate < formatDate(Date())) {
-            kol = 'gris';
+        if (todoItem.done === false) {
+            var kol = 'noir';
+            if (todoItem.dueDate == formatDate(Date())) {
+                kol = 'rouge';
+            } else if (todoItem.dueDate < formatDate(Date())) {
+                kol = 'gris';
+            }
+            newLine = newLine + '<input type="checkbox" name="' + i + '" value="yes">';
+            newLine = newLine + '<span class="tasklist">' + '<span class="bleu">' + todoItem.who + ' :</span> <span class="' + kol + '">' + todoItem.task + ' (' + showDate(todoItem.dueDate) + ')</span>' + '</span><br>';
         }
-        li.innerHTML = '<span class="bleu">' + todoItem.who + ' :</span> <span class="' + kol + '">' + todoItem.task + ' (' + showDate(todoItem.dueDate) + ')</span>';
-        ul.appendChild(li);
     }
+    todoHtml.innerHTML = newLine;
+    // affiche donelist
+    var doneHtml = document.getElementById("doneList");
+    var newLine = '';
+    for (var i = 0; i < todos.length; i++) {
+        var todoItem = todos[i];
+        if (todoItem.done === true) {
+            var kol = 'gris';
+            newLine = newLine + '<input type="checkbox" name="' + i + '" value="yes">';
+            newLine = newLine + '<span class="tasklist">' + '<span class="gris">' + todoItem.who + ' :</span> <span class="' + kol + '">' + todoItem.task + '</span>' + '</span><br>';
+        }
+    }
+    doneHtml.innerHTML = newLine;
 }
 
 function getFormData() {
@@ -125,11 +141,11 @@ function checkInputText(value, msg) {
 }
 
 function addTodoToPage(todoItem) {
-    var ul = document.getElementById("todoList");
-    var li = document.createElement("li");
+    var newHtml = document.getElementById("newItem");
     var kol = 'vert';
-    li.innerHTML = '<span class="vert">NEW ENTRY : </span>' + '<span class="bleu">' + todoItem.who + ' :</span> <span class="' + kol + '">' + todoItem.task + ' (' + showDate(todoItem.dueDate) + ')</span>';
-    ul.appendChild(li);
+    var newLine = '<span class="vert">NEW ENTRY : </span>';
+    newLine = newLine + '<span class="tasklist">' + '<span class="bleu">' + todoItem.who + ' :</span> <span class="' + kol + '">' + todoItem.task + ' (' + showDate(todoItem.dueDate) + ')</span></span><br>';
+    newHtml.innerHTML = newLine;
     document.forms[0].reset();
 }
 
