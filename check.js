@@ -11,6 +11,8 @@ function toggleCheck(boxId) {
     todos[boxId].done = newCheckStatus;
     console.log(todos[boxId].done);
     saveCheckData();
+    var recCheck = document.getElementById("recCheck");
+    recCheck.innerHTML = '<button onclick="window.location.reload()">Record changes</button>';
 }
 
 function saveCheckData() {

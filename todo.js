@@ -112,7 +112,7 @@ function addTodosToPage() {
         var todoItem = todos[i];
         if (todoItem.done === true) {
             var kol = 'gris';
-            newLine = newLine + '<input type="checkbox" id="' + i + '" name="' + i + '" value="yes">';
+            newLine = newLine + '<input onclick="toggleCheck(' + i + ')" id="' + i + '" type="checkbox" name="' + i + '" value="yes">';
             newLine = newLine + '<span class="tasklist">' + '<span class="gris">' + todoItem.who + ' :</span> <span class="' + kol + '">' + todoItem.task + '</span>' + '</span><br>';
         }
     }
