@@ -100,7 +100,7 @@ function addTodosToPage() {
             } else if (todoItem.dueDate < formatDate(Date())) {
                 kol = 'gris';
             }
-            newLine = newLine + '<input onclick="toggleCheck(' + i + ')" type="checkbox" id="' + i + '" name="' + i + '" value="yes">';
+            newLine = newLine + '<input onclick="toggleCheck(' + i + ')" id="' + i + '" type="checkbox" name="' + i + '" value="yes">';
             newLine = newLine + '<span class="tasklist">' + '<span class="bleu">' + todoItem.who + ' :</span> <span class="' + kol + '">' + todoItem.task + ' (' + showDate(todoItem.dueDate) + ')</span>' + '</span><br>';
         }
     }
@@ -147,6 +147,20 @@ function addTodoToPage(todoItem) {
     newLine = newLine + '<span class="tasklist">' + '<span class="bleu">' + todoItem.who + ' :</span> <span class="' + kol + '">' + todoItem.task + ' (' + showDate(todoItem.dueDate) + ')</span></span><br>';
     newHtml.innerHTML = newLine;
     document.forms[0].reset();
+}
+
+function toggleCheck(boxId) {
+    var checkStatus = todos[boxId].done;
+    console.log(checkStatus);
+    if (checkStatus === true) {
+        var newCheckStatus = false;
+    } else {
+        var newCheckStatus = true;
+    }
+    console.log(newCheckStatus);
+    todos[boxId].done = newCheckStatus;
+    console.log(todos[boxId].done);
+    saveTodoData();
 }
 
 function saveTodoData() {
