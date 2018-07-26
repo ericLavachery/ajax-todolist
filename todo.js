@@ -149,20 +149,6 @@ function addTodoToPage(todoItem) {
     document.forms[0].reset();
 }
 
-function toggleCheck(boxId) {
-    var checkStatus = todos[boxId].done;
-    console.log(checkStatus);
-    if (checkStatus === true) {
-        var newCheckStatus = false;
-    } else {
-        var newCheckStatus = true;
-    }
-    console.log(newCheckStatus);
-    todos[boxId].done = newCheckStatus;
-    console.log(todos[boxId].done);
-    saveTodoData();
-}
-
 function saveTodoData() {
     var todoJSON = JSON.stringify(todos);
     var request = new XMLHttpRequest();
